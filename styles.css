@@ -1,0 +1,177 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#chat-container {
+    display: flex;
+    width: 100%;
+}
+
+/* Sidebar */
+#sidebar {
+    width: 20%;
+    background: #1e1e1e;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+#sidebar h2 {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+#sidebar nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+#sidebar nav ul li {
+    margin-bottom: 20px;
+}
+
+#sidebar nav ul li a {
+    text-decoration: none;
+    color: #aaaaaa;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+#sidebar nav ul li a:hover {
+    color: #ffffff;
+}
+
+/* Chat Main Area */
+#chat-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background: rgba(42, 42, 42, 0.6); /* Semi-transparent background */
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px); /* Apply blur effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Optional: Add a subtle border */
+    position: sticky; /* Ensures header stays visible while scrolling */
+    top: 0; /* Stick to the top */
+    z-index: 10; /* Ensure it overlays other elements */
+}
+
+header h1 {
+    font-size: 1.8rem;
+    margin: 0;
+    color: #fff;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+}
+
+.status .dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.status .dot.online {
+    background-color: #28a745;
+}
+
+#chat-box {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #181818;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.message.user {
+    background-color: #0066cc;
+    align-self: flex-end;
+    color: #ffffff;
+}
+
+.message.ai {
+    background-color: #333333;
+    align-self: flex-start;
+    color: #ffffff;
+}
+
+footer {
+    display: flex;
+    background: #2a2a2a;
+    padding: 10px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+}
+
+footer input {
+    flex-grow: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #1e1e1e;
+    color: #ffffff;
+    margin-right: 10px;
+    outline: none;
+}
+
+footer button {
+    background: #0066cc;
+    border: none;
+    padding: 10px 20px;
+    color: #ffffff;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+footer button:hover {
+    background: #005bb5;
+}
+
+/* Scrollbar styling for chat-box and entire page */
+::-webkit-scrollbar {
+    width: 8px; /* Scrollbar width */
+    height: 8px; /* Scrollbar height */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c0c0c0; /* Light gray scrollbar thumb */
+    border-radius: 4px; /* Rounded edges for thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a9a9a9; /* Slightly darker on hover */
+}
+
+::-webkit-scrollbar-track {
+    background: #1e1e1e; /* Dark background for the scrollbar track */
+    border-radius: 4px;
+}
+
+/* Firefox scrollbar styling */
+* {
+    scrollbar-width: thin; /* Thin scrollbar for Firefox */
+    scrollbar-color: #c0c0c0 #1e1e1e; /* Thumb and track colors */
+}
