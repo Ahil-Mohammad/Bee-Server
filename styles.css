@@ -14,9 +14,7 @@ body {
     display: flex;
     width: 100%;
 }
-.error{
-    color: red;
-}
+
 /* Sidebar */
 #sidebar {
     width: 20%;
@@ -110,22 +108,12 @@ header h1 {
 
 /* styles.css */
 .message.user {
-    background-color: #d1f7d1;
     align-self: flex-end;
-    border-radius: 10px;
-    padding: 8px;
-    margin: 5px;
-    max-width: 70%;
     text-align: right;
 }
 
 .message.bot {
-    background-color: #f0f0f0;
     align-self: flex-start;
-    border-radius: 10px;
-    padding: 8px;
-    margin: 5px;
-    max-width: 70%;
     text-align: left;
 }
 
