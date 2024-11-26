@@ -14,7 +14,9 @@ body {
     display: flex;
     width: 100%;
 }
-
+.error{
+    color: red;
+}
 /* Sidebar */
 #sidebar {
     width: 20%;
