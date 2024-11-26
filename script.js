@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
         chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
     }
 
-    // Send message to backend
+    // Send message to backend (Hugging Face space)
     async function sendMessage() {
         const userMessage = messageInput.value.trim();
         if (!userMessage) return;
@@ -24,8 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
         messageInput.value = "";
 
         try {
-            // Send user message to backend (Flask)
-            const response = await fetch("/send_message", {
+            // Send user message to Hugging Face space (change URL to your Hugging Face space URL)
+            const response = await fetch("https://your-hugging-face-space-url/send_message", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
