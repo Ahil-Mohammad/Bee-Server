@@ -106,17 +106,27 @@ header h1 {
     border-radius: 8px;
 }
 
+/* styles.css */
 .message.user {
-    background-color: #0066cc;
+    background-color: #d1f7d1;
     align-self: flex-end;
-    color: #ffffff;
+    border-radius: 10px;
+    padding: 8px;
+    margin: 5px;
+    max-width: 70%;
+    text-align: right;
 }
 
 .message.ai {
-    background-color: #333333;
+    background-color: #f0f0f0;
     align-self: flex-start;
-    color: #ffffff;
+    border-radius: 10px;
+    padding: 8px;
+    margin: 5px;
+    max-width: 70%;
+    text-align: left;
 }
+
 
 footer {
     display: flex;
