@@ -117,7 +117,7 @@ header h1 {
     text-align: right;
 }
 
-.message.ai {
+.message.bot {
     background-color: #f0f0f0;
     align-self: flex-start;
     border-radius: 10px;
