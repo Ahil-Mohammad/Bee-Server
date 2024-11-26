@@ -24,8 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
         messageInput.value = "";
 
         try {
-            // Send user message to backend
-            const response = await fetch("/api/chat", {
+            // Send user message to backend (Flask)
+            const response = await fetch("/send_message", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
