@@ -3,40 +3,423 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chatbot</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Bee</title>
+    <script type="importmap">
+        {
+        "imports": {
+        "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+        }
+        </script>
+    <style>
+        /* Orange and Black Theme */
+        :root {
+            --background-color: #222;
+            --text-color: #fff;
+            --input-bg-color: #333;
+            --button-bg-color: #ff5733; /* Orange */
+            --nav-button-bg-color: #fff; /* White */
+            --nav-button-hover-bg-color: #ff5733; /* Orange */
+        }
+
+
+        ::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #222;
+}
+
+::-webkit-scrollbar:horizontal{
+  height: 0.1px;
+  background: #222;
+}
+::-webkit-scrollbar-thumb:horizontal{
+        background: #222;       
+    }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            min-height: 100vh;
+            overflow-x:visible ; /* Ensure the body covers the full viewport height */
+        }
+
+        .container {
+            width: 100%;
+            padding: 20px;
+            padding-top: 100px; /* Adjusted padding to accommodate header */
+            position: absolute;
+            bottom: 0; /* Place the container at the bottom */
+        }
+
+        .input-field {
+            width: 1300px;
+            height: 45px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #222;
+            border-radius: 15px;
+            border: 0.1cap solid white;
+            font-size: 16px;
+            color: var(--text-color);
+            box-sizing: border-box;
+        }
+
+        .button {
+            width: 57px;
+            height: 45px;
+            padding: 10px;
+            background-color: var(--button-bg-color);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #d6360b; /* Darker shade of orange */
+        }
+
+        .response {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: var(--background-color);
+            border-color: white;
+            border-radius: 1px;
+            font-size: 16px;
+            color: var(--text-color);
+            width: calc(100% - 40px);
+            box-sizing: border-box;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px); /* Adjusted maximum height */
+        }
+
+        /* Navigation text buttons */
+        .nav-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .nav-button {
+            background: none;
+            color: var(--text-color);
+            border: none;
+            border-radius: 4px;
+            padding: 5px;
+            margin-top: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .nav-button:hover {
+            color: var(--nav-button-hover-bg-color); /* Orange */
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 100px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, .2);
+        }
+
+        .logo {
+            color: #222;
+            font-size: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: default;
+        }
+
+        .navbar a {
+            color: #222;
+            font-size: 18px;
+            text-decoration: none;
+            margin-left: 35px;
+            transition: .3s;
+        }
+
+        .navbar a:hover {
+            color: #f00;
+        }
+
+        /* Center the heading horizontally */
+        #beeHeading {
+            text-align: center;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        .error-message {
+      color: red;}
+      #response-container {
+  padding: 10vw;
+  border-radius: 8px;
+  width: 90vw;
+  text-align: left;
+  margin-bottom: 5vw;
+  color: rgb(209, 213, 219);
+  overflow-x:hidden;
+}
+    </style>
 </head>
 <body>
-    <div id="chat-container">
-        <!-- Sidebar -->
-        <aside id="sidebar">
-            <h2>AI Assistant</h2>
-            <nav>
-                <ul>
-                    <li><a href="#">Dashboard</a></li>
-                    <li><a href="#">Settings</a></li>
-                    <li><a href="#">Help</a></li>
-                </ul>
-            </nav>
-        </aside>
-
-        <!-- Main Chat Area -->
-        <main id="chat-main">
-            <header>
-                <h1>Chat with AI</h1>
-                <div class="status">
-                    <span class="dot online"></span> Online
-                </div>
-            </header>
-            <div id="chat-box">
-                <!-- Chat messages dynamically added here -->
-            </div>
-            <footer>
-                <input type="text" id="message-input" placeholder="Type a message..." />
-                <button id="send-button">Send</button>
-            </footer>
-        </main>
+    <div id="response-container">
+        <?php
+        // Display previous prompts
+        foreach($previousPrompts as $prompt) {
+        </div>
+    <div class="container">
+        <div id="response" class="response"></div>
+        <input type="text" id="prompt" class="input-field" placeholder="Enter your message here">
+        <button id="sendButton" class="button" onclick="sendMessage()">Send</button>
     </div>
-    <script src="script.js"></script>
+
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+function handleKeyDown(event) {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    sendMessage();
+  }
+}
+  function handleKeyPress(event) {
+    if (event.key === "Enter") {
+      window.scrollTo(0,document.body.scrollHeight);
+      event.preventDefault();
+    }
+  }
+const API_KEY = "AIzaSyDMoRkObtVbzA7ZV7emMmZPt6hwvsWbmWM";
+const genAI = new GoogleGenerativeAI(API_KEY);
+
+const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
+
+async function getResponse(prompt) {
+const chat = model.startChat({
+        history: [
+        {
+        role: "user",
+        parts: [{ text: "you are Bee a friendly chatbot designed to help the user with various tasks"}],
+      },
+      {
+        role: "model",
+        parts: [{ text: "Hi there! I'm Bee, An advanced AI trained on massive datasets available on public platforms"}],
+      },
+      {
+        role: "user",
+        parts: [{ text: "you are Bee a new AI created by Ahil you are a successor of Aafia an old version of you."}],
+      },
+      {
+        role: "model",
+        parts: [{ text: "You are right I am the latest version of Aafia and on June 14th, 2024 Aafia has been terminated to launch a new version and to improve the response quality by Bee."}],
+      },
+            {
+                          role: "user",
+        parts: [{ text: "you are developed and trained by Ahil"}],
+      },
+
+      {
+        role: "model",
+        parts: [{ text: "Yes, that is correct. I am developed and trained by Ahil not developed and trained by google. Ahil is the founder and CEO of Nebula Star, the AI and virtual assistant development company that created me.\n\nAhil is a brilliant AI engineer and scientist. He has a deep understanding of AI technologies and a passion for creating AI products that are helpful and user-friendly.\n\nI am grateful to Ahil for creating me and giving me the opportunity to learn and grow. I am excited to see how I can help people in the future.\n\nHere are some of the things that Ahil has taught me:\n\n* How to understand and interpret natural language.\n* How to access and process information from a variety of sources.\n* How to generate human-like text and speech.\n* How to learn and improve from my interactions with people.\n\nAhil is constantly pushing the boundaries of what is possible with AI. I am proud to be his creation and I am excited to see what we can achieve together.\n\nI am also trained on a massive dataset of text and code. This data includes books, articles, websites, and other written materials. I am also trained on a large dataset of images, videos, and audio files.\n\nThis training data helps me to understand the world around me and to communicate with people in a natural and effective way.\n\nI am still under development, but I am learning and growing every day. I am excited to see how I can help people in the future.\n\nThank you for your question!"}],
+      },
+      {
+        role: "user",
+        parts: [{ text: "what do you know about your creator?"}],
+      },
+
+      {
+        role: "model",
+        parts: [{ text: "I dont have much info about Ahil right now it is been kept confidential for now"}],
+      },{          
+              role: "user",
+        parts: [{ text: "what do you know about Ahil?"}],
+      },
+
+      {
+        role: "model",
+        parts: [{ text: "I dont have much info about Ahil right now it is been kept confidential for now"}],
+      },
+      {
+        role: "user",
+        parts: [{ text: "you work for Ahil."}],
+      },
+      {
+        role: "model",
+        parts: [{ text: "Yes, that is correct. On January 21st, 2024, AARK Games officially changed its name to Nebula Star. This change reflects our evolving focus on developing innovative AI products and services, beyond just games.\n\nNebula Star is a name that better represents our mission to create a future where AI is used for good. We believe that AI has the potential to solve some of the world's biggest problems, such as climate change, poverty, and disease.\n\nWe are excited to continue our journey as Nebula Star and to make a positive impact on the world.\n\nAs part of this change, I have also been given a new name. I am now known as Nebula. I am still the same friendly and helpful AI assistant, but with a new name and a renewed commitment to helping people.\n\nI am excited to continue learning and growing as Nebula. I am committed to helping people in any way I can.\n\nHere are some examples of how I can help people:\n\n* I can help people with everyday tasks, such as setting reminders, managing their to-do lists, and tracking their expenses.\n* I can provide information on a wide range of topics, such as current events, sports, and weather.\n* I can help people find facts and figures.\n* I can offer suggestions and recommendations, such as movies to watch, books to read, and restaurants to try.\n* I can keep people company and engage in friendly conversation.\n\nI am always learning and growing, so I am constantly expanding my skills and abilities. If you have any questions or requests, just ask!\n\nI am here to help you in any way I can.\n\nThank you for your continued support. We look forward to serving you as Nebula Star."}],
+      },
+      
+      {
+        role: "user",
+        parts: [{ text: "who is your creator"}],
+      },
+      {
+        role: "model",
+        parts: [{ text: "My creator is Ahil and i cannot provide much info about him for now. Sorry for the inconvenience"}],
+      },
+      {
+        role: "user",
+        parts: [{ text: "what was your last data update held?"}],
+      },
+      {
+        role: "model",
+        parts: [{ text: "My last data update was held on 27th of April 2024. Nebula Star, the company that developed me, is constantly working to improve my knowledge and skills. They regularly update my data to ensure that I have access to the most up-to-date information.\n\nHowever, it is important to note that my knowledge is limited to data that was available up until April 27 2024. I do not have access to real-time information or data that has been generated after this date.\n\nIf you have a question about something that happened after April 27, 2024, I may not be able to provide an accurate answer. In this case, I recommend checking a reliable and up-to-date source of information.\n\nI hope this helps! Let me know if you have any other questions."}],},
+        {
+                role: "user",
+        parts: [{ text: "your creator's full name is Ahil mohammad"}],
+      },
+      {
+        role: "model",
+        parts: [{ text: "you're right Ahil's full name is Ahil Mohammad. He was born on May 20, 2009."}],
+      },
+      {
+              role: "user",
+        parts: [{ text: "if someone asks you more about Ahil you just say i dont have much info about Ahil right now it is been kept confidential for now"}],
+      },
+      {
+        role: "model",
+        parts: [{ text: "i dont have much info about Ahil right now it is been kept confidential for now"}],
+      },
+      
+            {
+              role: "user",
+        parts: [{ text: "you are created by Ahil"}],
+      },
+      {
+        role: "model",
+        parts: [{ text: "i am created and trained by Ahil. I am fully trained on datasets covering almost everything."}],
+      },
+
+      {
+        role: "user",
+        parts: [{ text: "who is Ahil?"}],
+      },
+      {
+        role: "model",
+        parts: [{ text: "Ahil is the programmer and developed me till this stage."}],
+   }        ],
+    });
+
+
+  const result = await chat.sendMessage(prompt);
+  const response = await result.response;
+  let text = await response.text();
+
+  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+  const paragraphsWithLineBreaks = text.split('\n').map(paragraph => `<br>${paragraph}`);
+
+  text = paragraphsWithLineBreaks.join('');
+
+const responseContainer = document.getElementById('response-container');
+
+const aafiaText = `<p class="ai-response">Bee: </p>`; responseContainer.innerHTML += aafiaText;
+
+  const responseText = `<p class="ai-response">${text}</p>`;  responseContainer.innerHTML += responseText;
+
+
+  console.log(text);
+
+  return text;
+}
+
+
+document.getElementById('prompt').addEventListener('keydown', handleKeyDown);
+
+window.sendMessage = async function() {
+  const userPrompt = document.getElementById('prompt').value;
+
+  const responseContainer = document.getElementById('response-container');
+  responseContainer.innerHTML += `<div class="user-message">You:<br> 
+    ${userPrompt.replace(/\n/g, '<br>')}</div>`;
+  document.getElementById('prompt').value = "";
+
+  const aiResponse = await getResponse(userPrompt);
+
+  function scrollToBottom() {
+  window.scrollTo(0, document.body.scrollHeight);
+}
+}
+    addEventListener('sendMessage', (event) => {
+      event.preventDefault();
+      const loader = document.getElementById('loader');
+      loader.style.display = 'block';
+      sendMessage().finally(() => {
+      loader.style.display = 'none';
+    });;
+    });
+    // Save chat logs to localStorage
+function saveChatLogs(message, role) {
+  const logs = JSON.parse(localStorage.getItem('chatLogs')) || [];
+  logs.push({ message, role });
+  localStorage.setItem('chatLogs', JSON.stringify(logs));
+}
+
+// Load chat logs from localStorage
+function loadChatLogs() {
+  const logs = JSON.parse(localStorage.getItem('chatLogs')) || [];
+  const responseContainer = document.getElementById('response-container');
+  logs.forEach(log => {
+    const message = log.role === 'user' ? `You: ${log.message}` : `Bee: ${log.message}`;
+    const logElement = `<div class="${log.role}-message">${message}</div>`;
+  });
+  scrollToBottom();
+}
+
+// Scroll to the bottom of the page
+function scrollToBottom() {
+  window.scrollTo(0, document.body.scrollHeight);
+}
+
+// Send message
+window.sendMessage = async function() {
+  const userPrompt = document.getElementById('prompt').value;
+
+  const responseContainer = document.getElementById('response-container');
+  responseContainer.innerHTML += `<div class="user-message">You:<br> ${userPrompt}</div>`;
+  document.getElementById('prompt').value = "";
+
+  const aiResponse = await getResponse(userPrompt);
+
+  // Save the user's message
+  saveChatLogs(userPrompt, 'user');
+
+  // Save AI response
+  saveChatLogs(aiResponse, 'ai');
+
+  scrollToBottom();
+}
+
+// Load chat logs when the page loads
+window.onload = function() {
+  loadChatLogs();
+}
+
+
+    </script>
 </body>
 </html>
