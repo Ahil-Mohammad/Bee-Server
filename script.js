@@ -1,4 +1,10 @@
-        import { GoogleGenerativeAI } from "@google/generative-ai";
+{
+"imports": {
+"@google/generative-ai": "https://esm.run/@google/generative-ai"
+}
+}
+
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 function handleKeyDown(event) {
   if (event.key === "Enter" && !event.shiftKey) {
