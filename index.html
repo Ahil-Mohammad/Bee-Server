@@ -11,8 +11,7 @@
             }
         }
     </script>
-    <style>
-        /* Orange and Black Theme */
+    <style>/* Orange and Black Theme */
         :root {
             --background-color: #121212;
             --text-color: #fff;
@@ -51,8 +50,8 @@
             background-color: #121212;
             color: #ffffff;
             display: flex;
-            flex-direction: column; /* Stack header and content */
-            min-height: 100vh; /* Ensure full viewport height */
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .header {
@@ -60,19 +59,19 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 10px 20px; /* Adjusted padding */
+            padding: 10px 20px;
             background: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, .2);
-            z-index: 100; /* Ensure header stays on top */
+            z-index: 100;
             box-sizing: border-box;
         }
 
         .logo {
             color: #121212;
-            font-size: 20px; /* Adjusted font size */
+            font-size: 20px;
             text-decoration: none;
             font-weight: 600;
             cursor: default;
@@ -80,9 +79,9 @@
 
         .navbar a {
             color: #121212;
-            font-size: 16px; /* Adjusted font size */
+            font-size: 16px;
             text-decoration: none;
-            margin-left: 20px; /* Adjusted margin */
+            margin-left: 20px;
             transition: .3s;
         }
 
@@ -92,15 +91,27 @@
 
         .container {
             width: 100%;
-            padding: 70px 20px 20px; /* Adjusted padding for content */
+            padding: 70px 20px 20px;
             box-sizing: border-box;
-            flex: 1; /* Allow content to expand */
+            flex: 1;
             display: flex;
             flex-direction: column;
+            padding-bottom: 70px; /* Space for the input/button area */
+        }
+
+        .input-area {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #121212;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
         }
 
         .input-field {
-            width: calc(100% - 70px); /* Full width minus button */
+            width: calc(100% - 70px);
             height: 45px;
             margin-bottom: 10px;
             padding: 10px;
@@ -122,7 +133,7 @@
             border-radius: 10px;
             font-size: 16px;
             cursor: pointer;
-            margin-left: 10px; /* Space between input and button */
+            margin-left: 10px;
         }
 
         .button:hover {
@@ -130,27 +141,42 @@
         }
 
         #response-container {
-            padding: 10px; /* Adjusted padding */
+            padding: 10px;
             border-radius: 8px;
-            width: 100%; /* Full width */
+            width: 100%;
             text-align: left;
             margin-bottom: 10px;
             color: rgb(209, 213, 219);
             overflow-x: hidden;
-            flex: 1; /* Allow response to expand */
+            flex: 1;
             overflow-y: auto;
         }
 
-        .response {
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: var(--background-color);
-            border-color: white;
-            border-radius: 1px;
-            font-size: 16px;
-            color: var(--text-color);
-            box-sizing: border-box;
+        .message-container {
+            display: flex;
+            flex-direction: column;
             width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .user-message, .ai-response {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background-color: #333;
+            color: #fff;
+            align-self: flex-end;
+        }
+
+        .ai-response {
+            background-color: #222;
+            color: #eee;
+            align-self: flex-start;
         }
 
         /* Navigation text buttons */
@@ -171,20 +197,20 @@
             padding: 5px;
             margin-top: 5px;
             cursor: pointer;
-            font-size: 14px; /* Adjusted font size */
+            font-size: 14px;
             text-decoration: underline;
             transition: color 0.3s ease;
         }
 
         .nav-button:hover {
-            color: var(--nav-button-hover-bg-color); /* Orange */
+            color: var(--nav-button-hover-bg-color);
         }
 
         .status {
             display: flex;
             align-items: center;
             color: #121212;
-            margin-left: auto; /* Push status to the right */
+            margin-left: auto;
         }
 
         .status .dot {
@@ -200,8 +226,10 @@
 
         /* Media Queries for Responsiveness */
         @media (max-width: 768px) {
+            .container {
+                padding-bottom: 100px;
+            }
             .input-field {
-                width: calc(100% - 70px); /* Full width minus button */
                 font-size: 14px;
             }
             .button {
@@ -215,7 +243,8 @@
             .logo {
                 font-size: 18px;
             }
-            .response {
+            .user-message, .ai-response {
+                max-width: 90%;
                 font-size: 14px;
             }
             .nav-buttons {
@@ -226,55 +255,31 @@
                 font-size: 12px;
             }
             .header {
-                padding: 10px 10px; /* Further reduced padding */
+                padding: 10px 10px;
                 flex-direction: column;
                 align-items: flex-start;
             }
             .status {
-                margin-left: 0; /* Remove right margin */
-                margin-top: 5px; /* Add top margin */
+                margin-left: 0;
+                margin-top: 5px;
             }
             .navbar {
                 margin-top: 5px;
             }
         }
-                .message-container { /* New container for user/AI messages */
-            display: flex;
-            flex-direction: column; /* Stack messages vertically */
-            width: 100%;
-            margin-bottom: 10px; /* Space between message pairs */
-        }
-
-        .user-message, .ai-response {
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 5px; /* Space between messages within a pair */
-            max-width: 80%; /* Limit message width */
-            word-wrap: break-word; /* Allow long words to wrap */
-        }
-
-        .user-message {
-            background-color: #333; /* Slightly darker background for user */
-            color: #fff;
-            align-self: flex-end; /* Align user messages to the right */
-        }
-
-        .ai-response {
-            background-color: #222; /* Slightly lighter background for AI */
-            color: #eee;
-            align-self: flex-start; /* Align AI messages to the left */
-        }
-
-        /* Media Queries for Responsiveness (adjust max-width as needed) */
-        @media (max-width: 768px) {
-            .user-message, .ai-response {
-                max-width: 90%; /* Wider messages on smaller screens */
-                font-size: 14px;
-            }
-        }
         @media (max-width: 480px) {
-            .user-message, .ai-response {
-                max-width: 95%; /* Wider messages on smaller screens */
+            .container {
+                padding-bottom: 110px;
+            }
+            .input-field {
+                font-size: 12px;
+            }
+            .button {
+                font-size: 12px;
+                width: 45px;
+            }
+             .user-message, .ai-response {
+                max-width: 95%;
                 font-size: 12px;
             }
         }
