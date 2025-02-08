@@ -329,7 +329,7 @@ function handleKeyDown(event) {
 const API_KEY = "AIzaSyDMoRkObtVbzA7ZV7emMmZPt6hwvsWbmWM";
 const genAI = new GoogleGenerativeAI(API_KEY);
 
-const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 async function getResponse(prompt) {
 const chat = model.startChat({
