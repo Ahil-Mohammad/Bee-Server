@@ -238,6 +238,46 @@
                 margin-top: 5px;
             }
         }
+                .message-container { /* New container for user/AI messages */
+            display: flex;
+            flex-direction: column; /* Stack messages vertically */
+            width: 100%;
+            margin-bottom: 10px; /* Space between message pairs */
+        }
+
+        .user-message, .ai-response {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 5px; /* Space between messages within a pair */
+            max-width: 80%; /* Limit message width */
+            word-wrap: break-word; /* Allow long words to wrap */
+        }
+
+        .user-message {
+            background-color: #333; /* Slightly darker background for user */
+            color: #fff;
+            align-self: flex-end; /* Align user messages to the right */
+        }
+
+        .ai-response {
+            background-color: #222; /* Slightly lighter background for AI */
+            color: #eee;
+            align-self: flex-start; /* Align AI messages to the left */
+        }
+
+        /* Media Queries for Responsiveness (adjust max-width as needed) */
+        @media (max-width: 768px) {
+            .user-message, .ai-response {
+                max-width: 90%; /* Wider messages on smaller screens */
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 480px) {
+            .user-message, .ai-response {
+                max-width: 95%; /* Wider messages on smaller screens */
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -259,9 +299,11 @@
         foreach($previousPrompts as $prompt) {
         </div>
     <div class="container">
-        <div id="response" class="response"></div>
-        <input type="text" id="prompt" class="input-field" placeholder="Enter your message here">
-        <button id="sendButton" class="button" onclick="sendMessage()">Send</button>
+        <div id="response-container">
+            </div>
+
+        <div style="display: flex;"> <input type="text" id="prompt" class="input-field" placeholder="Enter your message here">
+        <button id="sendButton" class="button" onclick="sendMessage()">Send</button></div>
     </div>
 
     <script type="module">
@@ -391,100 +433,41 @@ const chat = model.startChat({
 
 
   const result = await chat.sendMessage(prompt);
-  const response = await result.response;
-  let text = await response.text();
+            const response = await result.response;
+            let text = await response.text();
 
-  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-  const paragraphsWithLineBreaks = text.split('\n').map(paragraph => `<br>${paragraph}`);
+            const paragraphsWithLineBreaks = text.split('\n').map(paragraph => `<br>${paragraph}`);
+            text = paragraphsWithLineBreaks.join('');
 
-  text = paragraphsWithLineBreaks.join('');
+            return text;
+        }
 
-const responseContainer = document.getElementById('response-container');
+        document.getElementById('prompt').addEventListener('keydown', handleKeyDown);
 
-const aafiaText = `<p class="ai-response">Bee: </p>`; responseContainer.innerHTML += aafiaText;
+        window.sendMessage = async function() {
+            const userPrompt = document.getElementById('prompt').value;
+            document.getElementById('prompt').value = "";
 
-  const responseText = `<p class="ai-response">${text}</p>`;  responseContainer.innerHTML += responseText;
+            const responseContainer = document.getElementById('response-container');
 
+            // Display user message
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'message-container'; // Use the new container class
+            userMessageDiv.innerHTML = `<div class="user-message">You:<br>${userPrompt.replace(/\n/g, '<br>')}</div>`;
+            responseContainer.appendChild(userMessageDiv); // Append to the container
 
-  console.log(text);
+            const aiResponse = await getResponse(userPrompt);
 
-  return text;
-}
+            // Display AI response
+            const aiMessageDiv = document.createElement('div');
+            aiMessageDiv.className = 'message-container'; // Use the new container class
+            aiMessageDiv.innerHTML = `<div class="ai-response">Bee:<br>${aiResponse}</div>`;
+            responseContainer.appendChild(aiMessageDiv); // Append to the container
 
-
-document.getElementById('prompt').addEventListener('keydown', handleKeyDown);
-
-window.sendMessage = async function() {
-  const userPrompt = document.getElementById('prompt').value;
-
-  const responseContainer = document.getElementById('response-container');
-  responseContainer.innerHTML += `<div class="user-message">You:<br> 
-    ${userPrompt.replace(/\n/g, '<br>')}</div>`;
-  document.getElementById('prompt').value = "";
-
-  const aiResponse = await getResponse(userPrompt);
-
-  function scrollToBottom() {
-  window.scrollTo(0, document.body.scrollHeight);
-}
-}
-    addEventListener('sendMessage', (event) => {
-      event.preventDefault();
-      const loader = document.getElementById('loader');
-      loader.style.display = 'block';
-      sendMessage().finally(() => {
-      loader.style.display = 'none';
-    });;
-    });
-    // Save chat logs to localStorage
-function saveChatLogs(message, role) {
-  const logs = JSON.parse(localStorage.getItem('chatLogs')) || [];
-  logs.push({ message, role });
-  localStorage.setItem('chatLogs', JSON.stringify(logs));
-}
-
-// Load chat logs from localStorage
-function loadChatLogs() {
-  const logs = JSON.parse(localStorage.getItem('chatLogs')) || [];
-  const responseContainer = document.getElementById('response-container');
-  logs.forEach(log => {
-    const message = log.role === 'user' ? `You: ${log.message}` : `Bee: ${log.message}`;
-    const logElement = `<div class="${log.role}-message">${message}</div>`;
-  });
-  scrollToBottom();
-}
-
-// Scroll to the bottom of the page
-function scrollToBottom() {
-  window.scrollTo(0, document.body.scrollHeight);
-}
-
-// Send message
-window.sendMessage = async function() {
-  const userPrompt = document.getElementById('prompt').value;
-
-  const responseContainer = document.getElementById('response-container');
-  responseContainer.innerHTML += `<div class="user-message">You:<br> ${userPrompt}</div>`;
-  document.getElementById('prompt').value = "";
-
-  const aiResponse = await getResponse(userPrompt);
-
-  // Save the user's message
-  saveChatLogs(userPrompt, 'user');
-
-  // Save AI response
-  saveChatLogs(aiResponse, 'ai');
-
-  scrollToBottom();
-}
-
-// Load chat logs when the page loads
-window.onload = function() {
-  loadChatLogs();
-}
-
-
+            scrollToBottom(); // Scroll to the bottom after each message
+        }
     </script>
 </body>
 </html>
