@@ -6,11 +6,11 @@
     <title>Bee</title>
     <script type="importmap">
         {
-        "imports": {
-        "@google/generative-ai": "https://esm.run/@google/generative-ai"
+            "imports": {
+                "@google/generative-ai": "https://esm.run/@google/generative-ai"
+            }
         }
-        }
-        </script>
+    </script>
     <style>
         /* Orange and Black Theme */
         :root {
@@ -22,50 +22,87 @@
             --nav-button-hover-bg-color: #ff5733; /* Orange */
         }
 
-
         ::-webkit-scrollbar {
-  width: 10px;
-}
+            width: 10px;
+        }
 
-::-webkit-scrollbar-thumb {
-  background: white;
-  border-radius: 10px;
-}
+        ::-webkit-scrollbar-thumb {
+            background: white;
+            border-radius: 10px;
+        }
 
-::-webkit-scrollbar-track {
-  background: #121212;
-}
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
 
-::-webkit-scrollbar:horizontal{
-  height: 0.1px;
-  background: #121212;
-}
-::-webkit-scrollbar-thumb:horizontal{
-        background: #121212;       
-    }
-    body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    background-color: #121212;
-    color: #ffffff;
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-}
+        ::-webkit-scrollbar:horizontal {
+            height: 0.1px;
+            background: #121212;
+        }
+
+        ::-webkit-scrollbar-thumb:horizontal {
+            background: #121212;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column; /* Stack header and content */
+            min-height: 100vh; /* Ensure full viewport height */
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 20px; /* Adjusted padding */
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, .2);
+            z-index: 100; /* Ensure header stays on top */
+            box-sizing: border-box;
+        }
+
+        .logo {
+            color: #121212;
+            font-size: 20px; /* Adjusted font size */
+            text-decoration: none;
+            font-weight: 600;
+            cursor: default;
+        }
+
+        .navbar a {
+            color: #121212;
+            font-size: 16px; /* Adjusted font size */
+            text-decoration: none;
+            margin-left: 20px; /* Adjusted margin */
+            transition: .3s;
+        }
+
+        .navbar a:hover {
+            color: #f00;
+        }
 
         .container {
             width: 100%;
-            padding: 20px;
-            padding-top: 100px; /* Adjusted padding to accommodate header */
-            position: absolute;
-            bottom: 0; /* Place the container at the bottom */
+            padding: 70px 20px 20px; /* Adjusted padding for content */
+            box-sizing: border-box;
+            flex: 1; /* Allow content to expand */
+            display: flex;
+            flex-direction: column;
         }
 
         .input-field {
-            width: 1300px;
+            width: calc(100% - 70px); /* Full width minus button */
             height: 45px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             padding: 10px;
             background-color: #121212;
             border-radius: 15px;
@@ -76,7 +113,7 @@
         }
 
         .button {
-            width: 57px;
+            width: 60px;
             height: 45px;
             padding: 10px;
             background-color: #0066cc;
@@ -85,31 +122,42 @@
             border-radius: 10px;
             font-size: 16px;
             cursor: pointer;
+            margin-left: 10px; /* Space between input and button */
         }
 
         .button:hover {
-            background-color: #005bb5; /* Darker shade of orange */
+            background-color: #005bb5;
+        }
+
+        #response-container {
+            padding: 10px; /* Adjusted padding */
+            border-radius: 8px;
+            width: 100%; /* Full width */
+            text-align: left;
+            margin-bottom: 10px;
+            color: rgb(209, 213, 219);
+            overflow-x: hidden;
+            flex: 1; /* Allow response to expand */
+            overflow-y: auto;
         }
 
         .response {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             padding: 10px;
             background-color: var(--background-color);
             border-color: white;
             border-radius: 1px;
             font-size: 16px;
             color: var(--text-color);
-            width: calc(100% - 40px);
             box-sizing: border-box;
-            overflow-y: auto;
-            max-height: calc(100vh - 200px); /* Adjusted maximum height */
+            width: 100%;
         }
 
         /* Navigation text buttons */
         .nav-buttons {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -123,7 +171,7 @@
             padding: 5px;
             margin-top: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px; /* Adjusted font size */
             text-decoration: underline;
             transition: color 0.3s ease;
         }
@@ -132,88 +180,80 @@
             color: var(--nav-button-hover-bg-color); /* Orange */
         }
 
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px 100px;
-            background: white;
+        .status {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, .2);
-        }
-
-        .logo {
             color: #121212;
-            font-size: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            cursor: default;
+            margin-left: auto; /* Push status to the right */
         }
 
-        .navbar a {
-            color: #121212;
-            font-size: 18px;
-            text-decoration: none;
-            margin-left: 35px;
-            transition: .3s;
+        .status .dot {
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
         }
 
-        .navbar a:hover {
-            color: #f00;
+        .status .dot.online {
+            background-color: #28a745;
         }
 
-        /* Center the heading horizontally */
-        #beeHeading {
-            text-align: center;
-            margin-top: auto;
-            margin-bottom: auto;
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .input-field {
+                width: calc(100% - 70px); /* Full width minus button */
+                font-size: 14px;
+            }
+            .button {
+                font-size: 14px;
+                width: 50px;
+            }
+            .navbar a {
+                font-size: 14px;
+                margin-left: 15px;
+            }
+            .logo {
+                font-size: 18px;
+            }
+            .response {
+                font-size: 14px;
+            }
+            .nav-buttons {
+                top: 5px;
+                right: 5px;
+            }
+            .nav-button {
+                font-size: 12px;
+            }
+            .header {
+                padding: 10px 10px; /* Further reduced padding */
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .status {
+                margin-left: 0; /* Remove right margin */
+                margin-top: 5px; /* Add top margin */
+            }
+            .navbar {
+                margin-top: 5px;
+            }
         }
-        .error-message {
-      color: red;}
-      #response-container {
-  padding: 10vw;
-  border-radius: 8px;
-  width: 90vw;
-  text-align: left;
-  margin-bottom: 5vw;
-  color: rgb(209, 213, 219);
-  overflow-x:hidden;
-}
-
-.status {
-    display: flex;
-    align-items: center;
-    color: #121212;
-}
-
-.status .dot {
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.status .dot.online {
-    background-color: #28a745;
-}
     </style>
 </head>
 <body>
     <header class="header">
         <a class="logo">Bee🐝</a>
         <div class="status">
-          <span class="dot online"></span> Online
-      </div>
+            <span class="dot online"></span> Online
+        </div>
         <nav class="navbar">
             <a href="#">Home</a>
             <a href="#">About Me</a>
             <a href="#">Contact Me</a>
         </nav>
     </header>
-    <div id="response-container">
+    <div class="container">
+        <div id="response-container"></div>
         <?php
         // Display previous prompts
         foreach($previousPrompts as $prompt) {
